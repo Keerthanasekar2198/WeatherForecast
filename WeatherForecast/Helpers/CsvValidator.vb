@@ -21,7 +21,7 @@
             Throw New CsvParsingException($"Invalid Longitude at Line {lineNumber}")
         End If
 
-        Dim LocationName = values(2).Trim()
+        Dim LocationName = values(2).Substring(1).Trim()
 
         If String.IsNullOrEmpty(LocationName) Then
             Throw New CsvParsingException($"Location Name is Empty at Line {lineNumber}")

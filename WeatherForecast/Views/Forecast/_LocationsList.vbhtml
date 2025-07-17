@@ -2,46 +2,45 @@
 
 @Code
     ViewData("Title") = "Forecast Results"
+    Dim dateHeaders As New List(Of Date)
+    If Model IsNot Nothing AndAlso Model.Any() AndAlso Model(0).DailyForecasts IsNot Nothing Then
+        For Each forecast In Model(0).DailyForecasts
+            dateHeaders.Add(forecast.DateValue)
+        Next
+    End If
 End Code
 
 <main>
-    <h2>Weather Forecast</h2>
-
     @If Model Is Nothing OrElse Not Model.Any() Then
         @<text>
             <div class="alert alert-warning">No forecast data available.</div>
         </text>
     Else
-        For Each locationForecast In Model
-            @<text>
-                <div class="card mb-3">
-                    <div class="card-header">
-                        Forecast for @locationForecast.LocationName (@locationForecast.Latitude, @locationForecast.Longitude)
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Min Temp (°C)</th>
-                                    <th>Max Temp (°C)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @For Each ForecastData In locationForecast.DailyForecasts
-                                    @<text>
-                                        <tr>
-                                            <td>@ForecastData.DateValue.ToShortDateString()</td>
-                                            <td>@ForecastData.TemperatureMin</td>
-                                            <td>@ForecastData.TemperatureMax</td>
-                                        </tr>
-                                    </text>
+        @<text>
+            <table class="table table-bordered top-margin">
+                <thead>
+                    <tr>
+                        <th> Location(Lat, Long)</th>
+                        @For Each d In dateHeaders
+                            @<th>@d.ToString("MMM dd")<br /><small>Min/Max(°C)</small></th>
+                        Next
+                    </tr>
+                </thead>
+                <tbody>
+                    @For Each locationForecast In Model
+                        @<text>
+                            <tr>
+                                <td><b>@locationForecast.LocationName (@locationForecast.Latitude, @locationForecast.Longitude)</b></td>
+                                @For Each forecast In locationForecast.DailyForecasts
+                                    @<td>
+                                        @forecast.TemperatureMin/@forecast.TemperatureMax
+                                    </td>
                                 Next
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </text>
-        Next
+                            </tr>
+                        </text>
+                    Next
+                </tbody>
+            </table>
+        </text>
     End If
 </main>
