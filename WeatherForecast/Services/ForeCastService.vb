@@ -15,21 +15,26 @@ Public Class ForeCastService
     End Sub
 
     Public Function GetLocationForecast(lat As Double, lon As Double, locationName As String) As LocationViewModel Implements IForecastService.GetLocationForecast
-        Dim forecasts = GetDailyForecast(lat, lon)
-
-        Dim locationViewModel As New LocationViewModel() With {
-        .Latitude = lat.ToString(),
-        .Longitude = lon.ToString(),
-        .LocationName = locationName,
-        .DailyForecasts = forecasts
-    }
-
         Dim forecastRepositoryService As New ForecastRepository()
 
+        Dim forecastDataFromDb = forecastRepositoryService.FetchRecentForecastsData(lat, lon)
 
-        forecastRepositoryService.SaveForecastsData(New List(Of LocationViewModel) From {locationViewModel})
+        If forecastDataFromDb IsNot Nothing AndAlso forecastDataFromDb.DailyForecasts IsNot Nothing AndAlso forecastDataFromDb.DailyForecasts.Any() Then
+            Return forecastDataFromDb
+        Else
+            Dim forecasts = GetDailyForecast(lat, lon)
 
-        Return locationViewModel
+            Dim locationViewModel As New LocationViewModel() With {
+            .Latitude = lat.ToString(),
+            .Longitude = lon.ToString(),
+            .LocationName = locationName,
+            .DailyForecasts = forecasts
+            }
+
+            forecastRepositoryService.SaveForecastsData(New List(Of LocationViewModel) From {locationViewModel})
+
+            Return locationViewModel
+        End If
     End Function
 
     Public Function GetDailyForecast(lat As Double, lon As Double) As List(Of ForecastData) Implements IForecastService.GetDailyForecast

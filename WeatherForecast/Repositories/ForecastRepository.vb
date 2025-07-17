@@ -9,8 +9,8 @@ Public Class ForecastRepository
 
             For Each location In locationForecasts
                 For Each forecastData In location.DailyForecasts
-                    Dim cmd As New SqlCommand("INSERT INTO ForecastsData (LocationName, Latitude, Longitude, ForecastDate, TemperatureMax, TemperatureMin) 
-                                               VALUES (@LocationName, @Latitude, @Longitude, @ForecastDate, @MaxTemp, @MinTemp)", connection)
+                    Dim cmd As New SqlCommand("INSERT INTO ForecastsData (LocationName, Latitude, Longitude, ForecastDate, TemperatureMax, TemperatureMin, FetchedAt) 
+                                               VALUES (@LocationName, @Latitude, @Longitude, @ForecastDate, @MaxTemp, @MinTemp, @FetchedAt)", connection)
 
                     cmd.Parameters.AddWithValue("@LocationName", location.LocationName)
                     cmd.Parameters.AddWithValue("@Latitude", location.Latitude)
@@ -18,10 +18,49 @@ Public Class ForecastRepository
                     cmd.Parameters.AddWithValue("@ForecastDate", forecastData.DateValue)
                     cmd.Parameters.AddWithValue("@MaxTemp", forecastData.TemperatureMax)
                     cmd.Parameters.AddWithValue("@MinTemp", forecastData.TemperatureMin)
-
+                    cmd.Parameters.AddWithValue("@FetchedAt", DateTime.UtcNow)
                     cmd.ExecuteNonQuery()
                 Next
             Next
         End Using
     End Sub
+
+    Public Function FetchRecentForecastsData(lat As Double, lon As Double) As LocationViewModel
+        Dim recentForecasts As New List(Of ForecastData)
+        Dim locationForecasts As New LocationViewModel()
+        Dim locationName As String = String.Empty
+
+        Using connection As New SqlConnection(_connectionString)
+            connection.Open()
+
+            Dim cmd As New SqlCommand("SELECT LocationName, Latitude, Longitude, ForecastDate, TemperatureMax, TemperatureMin FROM ForecastsData WHERE Latitude=@Latitude AND Longitude=@Longitude AND FetchedAt >= DATEADD(hour, -6, GETDATE()) ORDER BY FetchedAt", connection)
+
+            cmd.Parameters.AddWithValue("@Latitude", lat)
+            cmd.Parameters.AddWithValue("@Longitude", lon)
+
+            Using reader As SqlDataReader = cmd.ExecuteReader()
+                While reader.Read()
+                    locationName = reader("LocationName").ToString()
+
+                    recentForecasts.Add(New ForecastData With {
+                        .DateValue = Convert.ToDateTime(reader("ForecastDate")),
+                        .TemperatureMax = Convert.ToDouble(reader("TemperatureMax")),
+                        .TemperatureMin = Convert.ToDouble(reader("TemperatureMin"))
+                    })
+                End While
+            End Using
+        End Using
+
+        If recentForecasts.Any() Then
+            locationForecasts = New LocationViewModel With {
+                .LocationName = locationName,
+                .Latitude = lat.ToString(),
+                .Longitude = lon.ToString(),
+                .DailyForecasts = recentForecasts
+             }
+
+        End If
+
+        Return locationForecasts
+    End Function
 End Class
