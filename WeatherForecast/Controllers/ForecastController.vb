@@ -3,10 +3,10 @@
 Public Class ForecastController
     Inherits Controller
 
-    Private ReadOnly _locationService As ILocationService
+    Private ReadOnly _locationParserService As ILocationParserService
 
     Public Sub New()
-        _locationService = New LocationService()
+        _locationParserService = New LocationParserService()
     End Sub
 
     Public Function Index() As ActionResult
@@ -21,7 +21,14 @@ Public Class ForecastController
         End If
 
         Try
-            Dim locations = _locationService.ParseCsvFile(forecastCsvFile)
+            Dim locations = _locationParserService.ParseCsvFile(forecastCsvFile)
+
+            Dim forecastService As New ForeCastService()
+
+            For Each location In locations
+                location.DailyForecasts = forecastService.GetDailyForecast(location.Latitude, location.Longitude)
+            Next
+
             ViewBag.UploadedFileName = Path.GetFileName(forecastCsvFile.FileName)
             Return View("~/Views/Home/Index.vbhtml", locations)
         Catch ex As CsvParsingException

@@ -182,6 +182,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\CsvValidator.vb" />
+    <Compile Include="Models\ForecastData.vb" />
     <Compile Include="Models\LocationViewModel.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -201,8 +202,8 @@
     <Compile Include="Controllers\HomeController.vb" />
     <Compile Include="Services\ForeCastService.vb" />
     <Compile Include="Services\IForecastService.vb" />
-    <Compile Include="Services\ILocationService.vb" />
-    <Compile Include="Services\LocationService.vb" />
+    <Compile Include="Services\ILocationParserService.vb" />
+    <Compile Include="Services\LocationParserService.vb" />
     <Compile Include="Tests\ForecastServiceTests.vb" />
     <Compile Include="Tests\LocationServiceTests.vb" />
   </ItemGroup>

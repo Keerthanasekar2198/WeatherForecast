@@ -1,8 +1,8 @@
 ﻿Imports System.IO
 
-Public Class LocationService
-    Implements ILocationService
-    Public Function ParseCsvFile(file As HttpPostedFileBase) As List(Of LocationViewModel) Implements ILocationService.ParseCsvfile
+Public Class LocationParserService
+    Implements ILocationParserService
+    Public Function ParseCsvFile(file As HttpPostedFileBase) As List(Of LocationViewModel) Implements ILocationParserService.ParseCsvFile
         Dim Locations As New List(Of LocationViewModel)()
 
         Using reader As New StreamReader(file.InputStream)
