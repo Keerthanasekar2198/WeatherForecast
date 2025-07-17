@@ -204,8 +204,6 @@
     <Compile Include="Services\IForecastService.vb" />
     <Compile Include="Services\ILocationParserService.vb" />
     <Compile Include="Services\LocationParserService.vb" />
-    <Compile Include="Tests\ForecastServiceTests.vb" />
-    <Compile Include="Tests\LocationParserServiceTests.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
