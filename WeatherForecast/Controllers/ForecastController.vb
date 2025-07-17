@@ -22,14 +22,20 @@ Public Class ForecastController
 
         Try
             Dim locations = _locationParserService.ParseCsvFile(forecastCsvFile)
+
             Dim forecastService As New ForeCastService()
 
+            Dim locationsForecastData As New List(Of LocationViewModel)()
+
+
             For Each location In locations
-                location.DailyForecasts = forecastService.GetDailyForecast(location.Latitude, location.Longitude)
+                Dim forcastResult = forecastService.GetLocationForecast(Double.Parse(location.Latitude), Double.Parse(location.Longitude), location.LocationName)
+                locationsForecastData.Add(forcastResult)
+
             Next
 
             ViewBag.UploadedFileName = Path.GetFileName(forecastCsvFile.FileName)
-            Return View("~/Views/Home/Index.vbhtml", locations)
+            Return View("~/Views/Home/Index.vbhtml", locationsForecastData)
         Catch ex As CsvParsingException
             ModelState.AddModelError("", ex.Message)
             Return View("~/Views/Home/Index.vbhtml")

@@ -1,5 +1,4 @@
 ﻿Imports System.Net
-Imports System.Net.Http
 Imports System.Web.Script.Serialization
 
 Public Class ForeCastService
@@ -14,6 +13,24 @@ Public Class ForeCastService
             _baseUrl = baseUrl
         End If
     End Sub
+
+    Public Function GetLocationForecast(lat As Double, lon As Double, locationName As String) As LocationViewModel Implements IForecastService.GetLocationForecast
+        Dim forecasts = GetDailyForecast(lat, lon)
+
+        Dim locationViewModel As New LocationViewModel() With {
+        .Latitude = lat.ToString(),
+        .Longitude = lon.ToString(),
+        .LocationName = locationName,
+        .DailyForecasts = forecasts
+    }
+
+        Dim forecastRepositoryService As New ForecastRepository()
+
+
+        forecastRepositoryService.SaveForecastsData(New List(Of LocationViewModel) From {locationViewModel})
+
+        Return locationViewModel
+    End Function
 
     Public Function GetDailyForecast(lat As Double, lon As Double) As List(Of ForecastData) Implements IForecastService.GetDailyForecast
         Dim url As String = $"{_baseUrl}?latitude={lat}&longitude={lon}&daily=temperature_2m_max,temperature_2m_min&timezone=auto"

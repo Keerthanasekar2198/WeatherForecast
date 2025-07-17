@@ -200,6 +200,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Controllers\HomeController.vb" />
+    <Compile Include="Repositories\ForecastRepository.vb" />
     <Compile Include="Services\ForeCastService.vb" />
     <Compile Include="Services\IForecastService.vb" />
     <Compile Include="Services\ILocationParserService.vb" />
