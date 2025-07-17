@@ -13,7 +13,7 @@ End Code
 
 <main>
     <button id="reuploadBtn" type="button" class="btn btn-secondary mt-3" onclick="ReuploadCSV()">Re-upload CSV</button>
-
+    <i id="graphIcon" class="bi bi-graph-up"></i>
     @If Model Is Nothing OrElse Not Model.Any() Then
         @<text>
             <div class="alert alert-warning">No forecast data available.</div>
