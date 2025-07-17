@@ -7,7 +7,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body>
+<body style="background-color: #d9d9d9;">
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
         <div class="container">
             @Html.ActionLink("GeoForecast", "Index", "Home", New With {.area = ""}, New With {.class = "navbar-brand"})
@@ -17,7 +17,7 @@
             </button>
         </div>
     </nav>
-    <div class="container body-content">
+    <div class="container body-content mb-1">
         @RenderBody()
         <hr />
         <footer>

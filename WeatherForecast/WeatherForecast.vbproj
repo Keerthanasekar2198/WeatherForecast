@@ -268,6 +268,7 @@
     <Content Include="Scripts\external\jquery-3.7.0.min.map" />
     <Content Include="Scripts\external\jquery-3.7.0.slim.min.map" />
     <Content Include="Views\Forecast\_LocationsList.vbhtml" />
+    <Content Include="Views\Forecast\_UploadForm.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
