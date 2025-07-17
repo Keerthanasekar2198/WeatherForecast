@@ -15,8 +15,6 @@ Public Class ForeCastService
 
             Dim forecastList As New List(Of ForecastData)
 
-            Console.WriteLine(serializedData)
-
             If serializedData.ContainsKey("daily") Then
                 Dim daily = CType(serializedData("daily"), Dictionary(Of String, Object))
                 Dim dates = CType(daily("time"), ArrayList)

@@ -205,7 +205,7 @@
     <Compile Include="Services\ILocationParserService.vb" />
     <Compile Include="Services\LocationParserService.vb" />
     <Compile Include="Tests\ForecastServiceTests.vb" />
-    <Compile Include="Tests\LocationServiceTests.vb" />
+    <Compile Include="Tests\LocationParserServiceTests.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -299,8 +299,6 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\_ViewStart.vbhtml" />
-    <Content Include="Views\Home\About.vbhtml" />
-    <Content Include="Views\Home\Contact.vbhtml" />
     <Content Include="Views\Home\Index.vbhtml" />
     <Content Include="Views\Shared\Error.vbhtml" />
     <Content Include="Views\Shared\_Layout.vbhtml" />

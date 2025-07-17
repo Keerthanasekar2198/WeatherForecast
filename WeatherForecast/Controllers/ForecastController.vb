@@ -22,7 +22,6 @@ Public Class ForecastController
 
         Try
             Dim locations = _locationParserService.ParseCsvFile(forecastCsvFile)
-
             Dim forecastService As New ForeCastService()
 
             For Each location In locations
