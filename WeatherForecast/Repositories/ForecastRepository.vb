@@ -2,6 +2,7 @@
 
 Public Class ForecastRepository
     Private ReadOnly _connectionString As String = ConfigurationManager.ConnectionStrings("ForecastDb").ConnectionString
+    Private ReadOnly _cacheHours As Integer = ConfigurationManager.AppSettings("ForecastCacheHours")
 
     Public Sub SaveForecastsData(locationForecasts As List(Of LocationViewModel))
         Using connection As New SqlConnection(_connectionString)
@@ -33,7 +34,7 @@ Public Class ForecastRepository
         Using connection As New SqlConnection(_connectionString)
             connection.Open()
 
-            Dim cmd As New SqlCommand("SELECT LocationName, Latitude, Longitude, ForecastDate, TemperatureMax, TemperatureMin FROM ForecastsData WHERE Latitude=@Latitude AND Longitude=@Longitude AND FetchedAt >= DATEADD(hour, -6, GETDATE()) ORDER BY FetchedAt", connection)
+            Dim cmd As New SqlCommand("SELECT LocationName, Latitude, Longitude, ForecastDate, TemperatureMax, TemperatureMin FROM ForecastsData WHERE Latitude=@Latitude AND Longitude=@Longitude AND FetchedAt >= DATEADD(hour, -" & _cacheHours & ", GETDATE()) ORDER BY FetchedAt", connection)
 
             cmd.Parameters.AddWithValue("@Latitude", lat)
             cmd.Parameters.AddWithValue("@Longitude", lon)
