@@ -3,7 +3,7 @@
 
 <div class="card mt-4">
     <h1 id="title" class="text-center mt-5">
-        GeoForecast<img src="https://flagcdn.com/w40/gb.png" alt="UK Flag" class="ms-1" style="vertical-align: super; font-size: 2.75em;">
+        GeoForecast<img src="https://flagcdn.com/w40/gb.png" alt="UK Flag" class="ms-1" style="vertical-align: super; font-size: 2.75em; width:30px; height:20px">
     </h1>
     <p class="text-center mt-3">Upload your CSV and forecast weather.</p>
 

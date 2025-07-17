@@ -10,37 +10,43 @@
     End If
 End Code
 
+
 <main>
+    <button id="reuploadBtn" type="button" class="btn btn-secondary mt-3" onclick="ReuploadCSV()">Re-upload CSV</button>
+
     @If Model Is Nothing OrElse Not Model.Any() Then
         @<text>
             <div class="alert alert-warning">No forecast data available.</div>
         </text>
     Else
         @<text>
-            <table class="table table-bordered top-margin">
-                <thead>
-                    <tr>
-                        <th> Location(Lat, Long)</th>
-                        @For Each d In dateHeaders
-                            @<th>@d.ToString("MMM dd")<br /><small>Min/Max(°C)</small></th>
+
+            <div class="card mt-4 w-100" style="height: 600px; overflow-y: auto;">
+                <table class="table table-bordered top-margin">
+                    <thead>
+                        <tr>
+                            <th> Location</th>
+                            @For Each d In dateHeaders
+                                @<th>@d.ToString("MMM dd")<br /><small>Min/Max(°C)</small></th>
+                            Next
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @For Each locationForecast In Model
+                            @<text>
+                                <tr>
+                                    <td><b>@locationForecast.LocationName</b></td>
+                                    @For Each forecast In locationForecast.DailyForecasts
+                                        @<td>
+                                            @forecast.TemperatureMin/@forecast.TemperatureMax
+                                        </td>
+                                    Next
+                                </tr>
+                            </text>
                         Next
-                    </tr>
-                </thead>
-                <tbody>
-                    @For Each locationForecast In Model
-                        @<text>
-                            <tr>
-                                <td><b>@locationForecast.LocationName (@locationForecast.Latitude, @locationForecast.Longitude)</b></td>
-                                @For Each forecast In locationForecast.DailyForecasts
-                                    @<td>
-                                        @forecast.TemperatureMin/@forecast.TemperatureMax
-                                    </td>
-                                Next
-                            </tr>
-                        </text>
-                    Next
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </text>
     End If
 </main>

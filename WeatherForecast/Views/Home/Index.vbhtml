@@ -6,12 +6,18 @@ End Code
 
 <main>
     <section class="row" aria-labelledby="aspnetTitle">
-        
-        @Html.Partial("~/Views/Forecast/_UploadForm.vbhtml")
+        <div id="uploadSection" style="display:@(If(ViewBag.UploadedFileName Is Nothing, "block", "none"));">
+            @Html.Partial("~/Views/Forecast/_UploadForm.vbhtml")
+        </div>
+
 
         @* Render partial view with the locations if Model exists *@
         @If Model IsNot Nothing Then
-            @Html.Partial("~/Views/Forecast/_LocationsList.vbhtml", Model)
+            @<text>
+                <div id="forecastSection">
+                    @Html.Partial("~/Views/Forecast/_LocationsList.vbhtml", Model)
+                </div>
+            </text>
         End If
 
     </section>
