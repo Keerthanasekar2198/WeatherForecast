@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const fileInput = document.getElementById('forecastCsvInput');
     const fileName = document.getElementById('fileName');
     const clearBtn = document.getElementById('clearFile');
+    const dropZone = document.getElementById('dropZone');
    
 
     fileBox.style.display = (fileName.textContent && fileName.textContent !== "No file chosen") ? 'flex' : 'none';
@@ -32,17 +33,40 @@ document.addEventListener('DOMContentLoaded', function () {
     fileUploadTrigger?.addEventListener('click', function () {
         fileInput.click();
     });
+
+    ['dragenter', 'dragover'].forEach(eventType => {
+        dropZone.addEventListener(eventType, (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+    });
+
+    ['dragleave', 'drop'].forEach(eventType => {
+        dropZone.addEventListener(eventType, (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+        });
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const files = e.dataTransfer.files;
+
+        if (files.length > 0) {
+            fileInput.files = files;
+
+            fileName.textContent = files[0].name;
+            fileBox.style.display = 'flex';
+
+            form.submit();
+        }
+    });
 });
 
 function ReuploadCSV() {
-    const uploadSection = document.getElementById('uploadSection');
-    const forecastSection = document.getElementById('forecastSection');
-    const chartSection = document.getElementById('chartSection');
-
-    uploadSection.style.display = 'block';
-    forecastSection.style.display = 'none';
-    chartSection.style.display = 'none';
-    fileName.textContent = 'No file selected';
+    const fileInput = document.getElementById('forecastCsvInput');
+    fileInput.value = '';
+    fileInput.click();
 }
 
 function RenderChart() {
@@ -72,6 +96,5 @@ function OnLocationChange(selectedElement) {
 
     document.getElementById("Latitude").value = lat;
     document.getElementById("Longitude").value = lon;
-
     document.getElementById("cityForm").submit();
 }
