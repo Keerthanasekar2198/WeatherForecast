@@ -17,7 +17,7 @@ Approach:
 
 Points to be noted:
 1. Used local SQL Server DB to store the recent forecasts data
-2. The application uses local database storage as a cache with a 6-hour expiration. When a user requests forecast data, the system checks if the most recent data for that location was fetched within the last 6 hours. If so, it retrieves the data from the database instead of making an external API call, thereby reducing latency and improving performance.
+2. The application uses local database storage as a cache with a 6-hour expiration. When a user requests forecast data, the system checks if the most recent data for that location was fetched within the last 6 hours. If so, it retrieves the data from the database instead of making an external API call, thereby reducing latency and improving performance. (The configuration 6 hrs can be updated easily as it's included in the config)
 3. Implemented modular approach and tried to reused most functionalities(Example: Resued GetLocationForecast service for rendering both chart and table view)
 4. Implemented Object Oriented Programming concepts Encapsulation, Inheritance, Abstraction, Polymorphism
 5. Implemented unit tests MS-Tests for both LocationCSVParser (covers all happy and negative cases for CSV Validation), ForecastService(covers happy and negative cases for returning forecast data)
