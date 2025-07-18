@@ -8,8 +8,8 @@ Public Class LocationParserServiceTests
     <TestMethod>
     Public Sub ParseCsvFile_ReturnLocationsSuccessfully()
         Dim csvContent As String = "Latitude,Longitude,LocationName" & vbCrLf &
-                           "51.507351,-0.127758,""London,UK""" & vbCrLf &
-                           "55.864239,-4.251806,""Glasgow,UK"""
+                           "51.507351,-0.127758,London,UK" & vbCrLf &
+                           "55.864239,-4.251806,Glasgow,UK"
         Dim byteArray As Byte() = Text.Encoding.UTF8.GetBytes(csvContent)
         Dim stream As New MemoryStream(byteArray)
 
@@ -29,7 +29,7 @@ Public Class LocationParserServiceTests
     <TestMethod>
     Public Sub ParseCsvFile_ThrowsCsvParsingException_WhenLocationIsNullOrEmpty()
         Dim csvContent As String = "Latitude,Longitude,LocationName" & vbCrLf &
-                           "51.507351,-0.127758,""" & vbCrLf
+                           "51.507351,-0.127758," & vbCrLf
         Dim byteArray As Byte() = Text.Encoding.UTF8.GetBytes(csvContent)
         Dim stream As New MemoryStream(byteArray)
 
@@ -50,7 +50,7 @@ Public Class LocationParserServiceTests
     <TestMethod>
     Public Sub ParseCsvFile_ThrowsCsvParsingException_WhenLatitudeIsNull()
         Dim csvContent As String = "Latitude,Longitude,LocationName" & vbCrLf &
-                           ",-0.127758,""Glasgow,UK""" & vbCrLf
+                           ",-0.127758,Glassgow,UK" & vbCrLf
         Dim byteArray As Byte() = Text.Encoding.UTF8.GetBytes(csvContent)
         Dim stream As New MemoryStream(byteArray)
 
