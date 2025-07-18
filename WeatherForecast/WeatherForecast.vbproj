@@ -181,6 +181,7 @@
     <Compile Include="Global.asax.vb">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ChartHelper.vb" />
     <Compile Include="Helpers\CsvValidator.vb" />
     <Compile Include="Models\ForecastData.vb" />
     <Compile Include="Models\LocationViewModel.vb" />
@@ -269,6 +270,7 @@
     <Content Include="Scripts\external\jquery-3.7.0.slim.min.map" />
     <Content Include="Views\Forecast\_LocationsList.vbhtml" />
     <Content Include="Views\Forecast\_UploadForm.vbhtml" />
+    <Content Include="Views\Forecast\_ForecastChart.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

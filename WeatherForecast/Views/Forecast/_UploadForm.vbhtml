@@ -8,8 +8,7 @@
     <p class="text-center mt-3">Upload your CSV and forecast weather.</p>
 
     <form id="uploadForm" action="@Url.Action("UploadCsv", "Forecast")" method="post" enctype="multipart/form-data">
-            <div class="drop-zone text-center d-flex flex-column justify-content-center align-items-center border p-4 mt-3"
-                 style="min-height: 140px; cursor: pointer; width: 100%; max-width: 60%; margin: 10% auto; border-color: #579fe8 !important;"
+            <div id="dropZone" class="drop-zone text-center d-flex flex-column justify-content-center align-items-center border p-4 mt-3"
                  onclick="document.getElementById('forecastCsvInput').click();">
 
                 <i id="fileUploadTrigger" class="bi bi-upload fs-2 mt-5" style="cursor: pointer;"></i>

@@ -37,8 +37,41 @@ document.addEventListener('DOMContentLoaded', function () {
 function ReuploadCSV() {
     const uploadSection = document.getElementById('uploadSection');
     const forecastSection = document.getElementById('forecastSection');
+    const chartSection = document.getElementById('chartSection');
 
     uploadSection.style.display = 'block';
     forecastSection.style.display = 'none';
+    chartSection.style.display = 'none';
     fileName.textContent = 'No file selected';
+}
+
+function RenderChart() {
+    const uploadSection = document.getElementById('uploadSection');
+    const forecastSection = document.getElementById('forecastSection');
+    const chartSection = document.getElementById('chartSection');
+
+    uploadSection.style.display = 'none';
+    forecastSection.style.display = 'none';
+    chartSection.style.display = 'block';
+}
+
+function ShowTable() {
+    const uploadSection = document.getElementById('uploadSection');
+    const forecastSection = document.getElementById('forecastSection');
+    const chartSection = document.getElementById('chartSection');
+
+    uploadSection.style.display = 'none';
+    forecastSection.style.display = 'block';
+    chartSection.style.display = 'none';
+}
+
+function OnLocationChange(selectedElement) {
+    var selectedOption = selectedElement.options[selectedElement.selectedIndex];
+    var lat = selectedOption.getAttribute("data-lat");
+    var lon = selectedOption.getAttribute("data-lon")
+
+    document.getElementById("Latitude").value = lat;
+    document.getElementById("Longitude").value = lon;
+
+    document.getElementById("cityForm").submit();
 }
