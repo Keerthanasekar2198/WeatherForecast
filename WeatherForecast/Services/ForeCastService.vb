@@ -1,76 +1,62 @@
-﻿Imports System.Net
-Imports System.Web.Script.Serialization
+﻿Imports System.IO
+Imports WeatherForecast.WeatherForecast.Helpers
+Imports WeatherForecast.WeatherForecast.Repositories
+Imports WeatherForecast.WeatherForecast.Services.ExternalApi
 
-Public Class ForeCastService
-    Implements IForecastService
+Namespace WeatherForecast.Services
+    Public Class ForeCastService
+        Implements IForecastService
 
-    Private ReadOnly _baseUrl As String
+        Private ReadOnly _locationParserService As ILocationParserService
+        Private ReadOnly _forecastRepositoryService As IForecastRepository
+        Private ReadOnly _openMeteoClient As IOpenMeteoClient
 
-    Public Sub New(Optional baseUrl As String = Nothing)
-        If String.IsNullOrEmpty(baseUrl) Then
-            _baseUrl = ConfigurationManager.AppSettings("OpenMeteoApiBaseUrl")
-        Else
-            _baseUrl = baseUrl
-        End If
-    End Sub
+        Public Sub New()
+            _locationParserService = New LocationParserService()
+            _forecastRepositoryService = New ForecastRepository()
+            _openMeteoClient = New OpenMeteoClient()
+        End Sub
 
-    Public Function GetLocationForecast(lat As Double, lon As Double, locationName As String) As LocationViewModel Implements IForecastService.GetLocationForecast
-        Dim forecastRepositoryService As New ForecastRepository()
+        Public Function ProcessForecastCSVFile(forecastCsvFile As HttpPostedFileBase) As Tuple(Of List(Of LocationViewModel), String, Tuple(Of String, List(Of Integer), List(Of Integer), List(Of String))) Implements IForecastService.ProcessForecastCSVFile
+            Dim forecastService As New ForeCastService()
 
-        Dim forecastDataFromDb = forecastRepositoryService.FetchRecentForecastsData(lat, lon)
+            Dim parsedLocations = _locationParserService.ParseCsvFile(forecastCsvFile)
 
-        If forecastDataFromDb IsNot Nothing AndAlso forecastDataFromDb.DailyForecasts IsNot Nothing AndAlso forecastDataFromDb.DailyForecasts.Any() Then
-            Return forecastDataFromDb
-        Else
-            Dim forecasts = GetDailyForecast(lat, lon)
+            Dim forecastDataList As New List(Of LocationViewModel)()
 
-            Dim locationViewModel As New LocationViewModel() With {
+
+            For Each location In parsedLocations
+                Dim data = forecastService.GetLocationForecast(Double.Parse(location.Latitude), Double.Parse(location.Longitude), location.LocationName)
+                forecastDataList.Add(data)
+            Next
+
+            Dim chartData = ChartHelper.RenderChart(forecastDataList(0))
+            Dim fileName = Path.GetFileName(forecastCsvFile.FileName)
+
+            Return Tuple.Create(forecastDataList, fileName, chartData)
+
+        End Function
+
+        Public Function GetLocationForecast(lat As Double, lon As Double, locationName As String) As LocationViewModel Implements IForecastService.GetLocationForecast
+
+            Dim forecastDataFromDb = _forecastRepositoryService.FetchRecentForecastsData(lat, lon)
+
+            If forecastDataFromDb IsNot Nothing AndAlso forecastDataFromDb.DailyForecasts IsNot Nothing AndAlso forecastDataFromDb.DailyForecasts.Any() Then
+                Return forecastDataFromDb
+            Else
+                Dim data = _openMeteoClient.GetDailyForecastData(lat, lon)
+
+                Dim forecastData As New LocationViewModel() With {
             .Latitude = lat.ToString(),
             .Longitude = lon.ToString(),
             .LocationName = locationName,
-            .DailyForecasts = forecasts
+            .DailyForecasts = data
             }
 
-            forecastRepositoryService.SaveForecastsData(New List(Of LocationViewModel) From {locationViewModel})
+                _forecastRepositoryService.SaveForecastsData(New List(Of LocationViewModel) From {forecastData})
 
-            Return locationViewModel
-        End If
-    End Function
-
-    Public Function GetDailyForecast(lat As Double, lon As Double) As List(Of ForecastData) Implements IForecastService.GetDailyForecast
-        Dim url As String = $"{_baseUrl}?latitude={lat}&longitude={lon}&daily=temperature_2m_max,temperature_2m_min&timezone=auto"
-
-        Try
-            Using client As New WebClient()
-                Dim response = client.DownloadString(url)
-                Dim serializer As New JavaScriptSerializer()
-                Dim serializedData = serializer.Deserialize(Of Dictionary(Of String, Object))(response)
-
-                Dim forecastList As New List(Of ForecastData)
-
-                If serializedData.ContainsKey("daily") Then
-                    Dim daily = CType(serializedData("daily"), Dictionary(Of String, Object))
-                    Dim dates = CType(daily("time"), ArrayList)
-                    Dim maxTemperature = CType(daily("temperature_2m_max"), ArrayList)
-                    Dim minTemperature = CType(daily("temperature_2m_min"), ArrayList)
-
-                    For i As Integer = 0 To dates.Count - 1
-                        forecastList.Add(New ForecastData With {
-                            .DateValue = DateTime.Parse(dates(i).ToString()),
-                            .TemperatureMax = Convert.ToDouble(maxTemperature(i)),
-                            .TemperatureMin = Convert.ToDouble(minTemperature(i))
-                        })
-                    Next
-
-                End If
-
-                Return forecastList
-            End Using
-        Catch ex As WebException
-            Throw
-        Catch ex As Exception
-            Throw
-        End Try
-
-    End Function
-End Class
+                Return forecastData
+            End If
+        End Function
+    End Class
+End Namespace

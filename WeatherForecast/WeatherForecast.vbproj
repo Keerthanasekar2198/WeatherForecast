@@ -202,6 +202,9 @@
     </Compile>
     <Compile Include="Controllers\HomeController.vb" />
     <Compile Include="Repositories\ForecastRepository.vb" />
+    <Compile Include="Repositories\IForecastRepository.vb" />
+    <Compile Include="Services\ExternalApi\IOpenMeteoClient.vb" />
+    <Compile Include="Services\ExternalApi\OpenMeteoClient.vb" />
     <Compile Include="Services\ForeCastService.vb" />
     <Compile Include="Services\IForecastService.vb" />
     <Compile Include="Services\ILocationParserService.vb" />

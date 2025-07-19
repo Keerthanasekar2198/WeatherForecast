@@ -1,38 +1,45 @@
-﻿Public Class CsvValidator
-    Public Shared Function ValidateRecord(line As String, lineNumber As Integer)
-        If String.IsNullOrWhiteSpace(line) Then
-            Throw New CsvParsingException($"Line {lineNumber} is empty.")
-        End If
+﻿Imports WeatherForecast.WeatherForecast.Exceptions
 
-        Dim values = line.Split(","c)
+Namespace WeatherForecast.Helpers
 
-        If values.Length < 3 Then
-            Throw New CsvParsingException($"Line {lineNumber} is invalid: expected 3 columns, got {values.Length}.")
-        End If
+    Public Class CsvValidator
+        Public Shared Function ValidateRecord(line As String, lineNumber As Integer)
+            If String.IsNullOrWhiteSpace(line) Then
+                Throw New CsvParsingException($"Line {lineNumber} is empty.")
+            End If
 
-        Dim latitude As Double
-        Dim longitude As Double
+            Dim values = line.Split(","c)
 
-        If Not Double.TryParse(values(0).Trim, latitude) Then
-            Throw New CsvParsingException($"Invalid Latitude at Line {lineNumber}")
-        End If
+            If values.Length < 3 Then
+                Throw New CsvParsingException($"Line {lineNumber} is invalid: expected 3 columns, got {values.Length}.")
+            End If
 
-        If Not Double.TryParse(values(1).Trim, longitude) Then
-            Throw New CsvParsingException($"Invalid Longitude at Line {lineNumber}")
-        End If
+            Dim latitude As Double
+            Dim longitude As Double
 
-        Dim LocationName = values(2).Trim()
+            If Not Double.TryParse(values(0).Trim, latitude) Then
+                Throw New CsvParsingException($"Invalid Latitude at Line {lineNumber}")
+            End If
 
-        If String.IsNullOrWhiteSpace(LocationName) Then
-            Throw New CsvParsingException($"Location Name is Empty at Line {lineNumber}")
-        End If
+            If Not Double.TryParse(values(1).Trim, longitude) Then
+                Throw New CsvParsingException($"Invalid Longitude at Line {lineNumber}")
+            End If
 
-        Return New LocationViewModel With {
-         .Latitude = latitude,
-         .Longitude = longitude,
-         .LocationName = LocationName
-        }
+            Dim LocationName = values(2).Trim()
 
-    End Function
+            If String.IsNullOrWhiteSpace(LocationName) Then
+                Throw New CsvParsingException($"Location Name is Empty at Line {lineNumber}")
+            End If
 
-End Class
+            Return New LocationViewModel With {
+             .Latitude = latitude,
+             .Longitude = longitude,
+             .LocationName = LocationName
+            }
+
+        End Function
+
+    End Class
+
+
+End Namespace

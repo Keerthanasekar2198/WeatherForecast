@@ -1,14 +1,18 @@
-﻿Public Class CsvParsingException
-    Inherits Exception
+﻿Namespace WeatherForecast.Exceptions
 
-    Public Sub New()
-    End Sub
+    Public Class CsvParsingException
+        Inherits Exception
 
-    Public Sub New(message As String)
-        MyBase.New(message)
-    End Sub
+        Public Sub New()
+        End Sub
 
-    Public Sub New(message As String, innerException As Exception)
-        MyBase.New(message, innerException)
-    End Sub
-End Class
+        Public Sub New(message As String)
+            MyBase.New(message)
+        End Sub
+
+        Public Sub New(message As String, innerException As Exception)
+            MyBase.New(message, innerException)
+        End Sub
+    End Class
+
+End Namespace

@@ -7,7 +7,7 @@
         @Using Html.BeginForm("GetForecastForCity", "Forecast", FormMethod.Get, New With {.id = "cityForm"})
             @<text> <select id="SelectedCity" name="SelectedCity" Class="form-select mt-3" onchange="OnLocationChange(this)">
                      <option value="@Model.Item1" selected>@Model.Item1</option>
-                    @For Each location In CType(ViewBag.LocationsList, List(Of LocationViewModel))
+                    @For Each location In CType(ViewBag.ForecastTabularData, List(Of LocationViewModel))
                         @<text>
                             <option value="@location.LocationName" data-lat="@location.Latitude" data-lon="@location.Longitude">@location.LocationName</option>
                         </text>

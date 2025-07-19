@@ -47,7 +47,7 @@ End Code
         @If Model IsNot Nothing Then
             @<text>
                 <div id="chartSection" style="@(If(ViewBag.ShowChart, "display:block", "display:none"))">
-                    @Html.Partial("~/Views/Forecast/_ForecastChart.vbhtml", ViewBag.ForecastData)
+                    @Html.Partial("~/Views/Forecast/_ForecastChart.vbhtml", ViewBag.ForecastChartData)
                 </div>
             </text>
         End If

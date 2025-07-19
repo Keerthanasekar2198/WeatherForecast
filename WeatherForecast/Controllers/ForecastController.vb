@@ -1,17 +1,15 @@
-﻿Imports System.IO
+﻿Imports WeatherForecast.WeatherForecast.Exceptions
+Imports WeatherForecast.WeatherForecast.Helpers
+Imports WeatherForecast.WeatherForecast.Services
 
 Public Class ForecastController
     Inherits Controller
 
-    Private ReadOnly _locationParserService As ILocationParserService
+    Private ReadOnly _forecastService As IForecastService
 
     Public Sub New()
-        _locationParserService = New LocationParserService()
+        _forecastService = New ForeCastService()
     End Sub
-
-    Public Function Index() As ActionResult
-        Return View()
-    End Function
 
     <HttpPost>
     Public Function UploadCsv(forecastCsvFile As HttpPostedFileBase) As ActionResult
@@ -21,29 +19,20 @@ Public Class ForecastController
         End If
 
         Try
-            Dim locations = _locationParserService.ParseCsvFile(forecastCsvFile)
+            Dim forecastData = _forecastService.ProcessForecastCSVFile(forecastCsvFile)
 
-            Dim forecastService As New ForeCastService()
-
-            Dim locationsForecastData As New List(Of LocationViewModel)()
-
-
-            For Each location In locations
-                Dim forcastResult = forecastService.GetLocationForecast(Double.Parse(location.Latitude), Double.Parse(location.Longitude), location.LocationName)
-                locationsForecastData.Add(forcastResult)
-
-            Next
-
-            ViewBag.UploadedFileName = Path.GetFileName(forecastCsvFile.FileName)
-            ViewBag.ForecastData = ChartHelper.RenderChart(locationsForecastData(0))
-            ViewBag.LocationsList = locations
-            Session("LocationsList") = locations
+            ViewBag.UploadedFileName = forecastData.Item2
+            ViewBag.ForecastChartData = forecastData.Item3
+            ViewBag.ForecastTabularData = forecastData.Item1
             ViewBag.ShowChart = False
-            Session("LocationsForecastData") = locationsForecastData
-            Return View("~/Views/Home/Index.vbhtml", locationsForecastData)
+            Session("ForecastTabularData") = forecastData.Item1
+
+            Return View("~/Views/Home/Index.vbhtml", forecastData.Item1)
+
         Catch ex As CsvParsingException
             ModelState.AddModelError("", ex.Message)
             Return View("~/Views/Home/Index.vbhtml")
+
         Catch ex As Exception
             ModelState.AddModelError("", ex.Message)
             Return View("~/Views/Home/Index.vbhtml")
@@ -52,18 +41,15 @@ Public Class ForecastController
 
     <HttpGet>
     Public Function GetForecastForCity(SelectedCity As String, Latitude As String, Longitude As String) As ActionResult
-        Dim forecastService As New ForeCastService()
 
-        Dim forecastResult = forecastService.GetLocationForecast(Double.Parse(Latitude), Double.Parse(Longitude), SelectedCity)
+        Dim forecastChartData = _forecastService.GetLocationForecast(Double.Parse(Latitude), Double.Parse(Longitude), SelectedCity)
 
-        Dim locationsForecastData = CType(Session("LocationsForecastData"), List(Of LocationViewModel))
+        Dim forecastData = CType(Session("ForecastTabularData"), List(Of LocationViewModel))
 
-        ViewBag.ForecastData = ChartHelper.RenderChart(forecastResult)
-
-        ViewBag.LocationsList = CType(Session("LocationsList"), List(Of LocationViewModel))
-
+        ViewBag.ForecastChartData = ChartHelper.RenderChart(forecastChartData)
+        ViewBag.ForecastTabularData = forecastData
         ViewBag.ShowChart = True
 
-        Return View("~/Views/Home/Index.vbhtml", locationsForecastData)
+        Return View("~/Views/Home/Index.vbhtml", forecastData)
     End Function
 End Class
