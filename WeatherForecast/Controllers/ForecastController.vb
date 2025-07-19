@@ -45,7 +45,7 @@ Public Class ForecastController
             ModelState.AddModelError("", ex.Message)
             Return View("~/Views/Home/Index.vbhtml")
         Catch ex As Exception
-            ModelState.AddModelError("", "An unexpected error occured.")
+            ModelState.AddModelError("", ex.Message)
             Return View("~/Views/Home/Index.vbhtml")
         End Try
     End Function
