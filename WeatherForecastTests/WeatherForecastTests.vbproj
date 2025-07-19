@@ -92,7 +92,7 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\ForeCastServiceTests.vb" />
+    <Compile Include="Services\OpenMeteoClientTests.vb" />
     <Compile Include="Services\LocationParserServiceTests.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
