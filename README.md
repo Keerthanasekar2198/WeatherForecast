@@ -13,13 +13,15 @@ Approach:
 7. Once chart view is switched there will a dropdown preloaded with list of locations that's been passed in the CSV
 8. By default chart view for first location in the CSV will be displayed (Line chart displaying min and max temperatures for first location - 7 days)
 9. User can switch the dropdown to different location so that chart data will be loaded for the selected location
-10. User can reupload CSV from the same page where they are currently and reuploading CSV will by default load the table view
+10. User can re-upload CSV from the same page where they are currently and reuploading CSV will be by default load the table view
 
 Points to be noted:
 1. Used local SQL Server DB to store the recent forecasts data
-2. Used the storage in local DB as caching for 6hrs so when the user tries to get the data if the last forecast data fetched time for the particular location is less than 6 hrs, it fetches from DB instead of making API call so that it reduces latency and improves performance
+2. The application uses local database storage as a cache with a 6-hour expiration. When a user requests forecast data, the system checks if the most recent data for that location was fetched within the last 6 hours. If so, it retrieves the data from the database instead of making an external API call, thereby reducing latency and improving performance. (The configuration 6 hrs can be updated easily as it's included in the config)
 3. Implemented modular approach and tried to reused most functionalities(Example: Resued GetLocationForecast service for rendering both chart and table view)
 4. Implemented Object Oriented Programming concepts Encapsulation, Inheritance, Abstraction, Polymorphism
 5. Implemented unit tests MS-Tests for both LocationCSVParser (covers all happy and negative cases for CSV Validation), ForecastService(covers happy and negative cases for returning forecast data)
 6. Created responsive UI and implemented bootstrap styling as well used javascript libraries like chart.js to render Line chart for rendering forecast data
 7. Improved code readability by organizing files into separate folders for Controllers, Services, Exceptions, Models, and Helpers, enhancing maintainability
+
+Documentation Link: https://github.com/Keerthanasekar2198/WeatherForecast/blob/master/Documentation-Weather%20Forecast%20Application.pdf
