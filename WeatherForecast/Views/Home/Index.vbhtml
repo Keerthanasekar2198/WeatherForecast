@@ -22,7 +22,7 @@ End Code
                     </div>
                     <div class="card-body text-danger">
                         @For Each e In ViewData.ModelState.Values.SelectMany(Function(v) v.Errors)
-                            @<text><div> <i class="bi"></i> @e.ErrorMessage  Please re-upload the CSV with proper values!</div></text>
+                            @<text><div> <i class="bi"></i> @e.ErrorMessage  Please re-upload the CSV with proper values.</div></text>
                         Next
                     </div>
                 </div>

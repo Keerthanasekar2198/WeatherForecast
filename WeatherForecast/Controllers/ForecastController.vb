@@ -16,7 +16,7 @@ Public Class ForecastController
     <HttpPost>
     Public Function UploadCsv(forecastCsvFile As HttpPostedFileBase) As ActionResult
         If forecastCsvFile Is Nothing OrElse forecastCsvFile.ContentLength = 0 Then
-            ModelState.AddModelError("", "Please upload a valid CSV file.")
+            ModelState.AddModelError("", "CSV File is empty.")
             Return View("~/Views/Home/Index.vbhtml")
         End If
 
