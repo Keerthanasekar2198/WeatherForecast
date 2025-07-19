@@ -24,4 +24,22 @@ Points to be noted:
 6. Created responsive UI and implemented bootstrap styling as well used javascript libraries like chart.js to render Line chart for rendering forecast data
 7. Improved code readability by organizing files into separate folders for Controllers, Services, Exceptions, Models, and Helpers, enhancing maintainability
 
+
+Project Structure:
+
+WeatherForecasts
+
+/Controllers          →  Handles HTTP requests (ForecastController)
+/Models               →  Classes for data ( LocationViewModel, ForecastData)
+/Views                →  UI templates (Index.vbhtml, PartialViews to upload, render chart/table views)
+/Services             →  Business logic (LocationCSVParserService, ForeCastService)
+/Service/ExternalApi  → External Api call(OpenMeteoApiClient)
+/Helpers              →  Utility classes (CSVValidator, ChartHelper)
+/Repository           →  Handles all database-related operations(ForecastRepository)
+/Exceptions           →  Handles all custom exceptions(CsvParsingException)
+/Web.config           →  Configuration settings (API keys, DB connection)
+
+WeatherForecastsTests (For unit tests)
+
+
 Documentation Link: https://github.com/Keerthanasekar2198/WeatherForecast/blob/master/Documentation-Weather%20Forecast%20Application.pdf
