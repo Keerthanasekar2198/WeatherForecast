@@ -1,7 +1,7 @@
 ﻿<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
 
-<div class="card mt-4">
+<div id="uploadSection" class="card mt-4">
     <h1 id="title" class="text-center mt-5">
         GeoForecast<img src="https://flagcdn.com/w40/gb.png" alt="UK Flag" class="ms-1" style="vertical-align: super; font-size: 2.75em; width:30px; height:20px">
     </h1>

@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', function () {
         fileBox.style.display = fileInput.files.length > 0 ? 'flex' : 'none';
 
         if (fileInput.files.length > 0) {
+            document.getElementById("uploadSection").style.display = "none";
+            document.getElementById("loader").style.display = "block";
             form.style.display = 'none';
             form.submit();
         }
