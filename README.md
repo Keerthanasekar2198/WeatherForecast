@@ -30,13 +30,21 @@ Project Structure:
 WeatherForecasts
 
 /Controllers          →  Handles HTTP requests (ForecastController)
+
 /Models               →  Classes for data ( LocationViewModel, ForecastData)
+
 /Views                →  UI templates (Index.vbhtml, PartialViews to upload, render chart/table views)
+
 /Services             →  Business logic (LocationCSVParserService, ForeCastService)
+
 /Service/ExternalApi  → External Api call(OpenMeteoApiClient)
+
 /Helpers              →  Utility classes (CSVValidator, ChartHelper)
+
 /Repository           →  Handles all database-related operations(ForecastRepository)
+
 /Exceptions           →  Handles all custom exceptions(CsvParsingException)
+
 /Web.config           →  Configuration settings (API keys, DB connection)
 
 WeatherForecastsTests (For unit tests)
