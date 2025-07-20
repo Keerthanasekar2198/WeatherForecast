@@ -18,15 +18,13 @@ Namespace WeatherForecast.Services
         End Sub
 
         Public Function ProcessForecastCSVFile(forecastCsvFile As HttpPostedFileBase) As Tuple(Of List(Of LocationViewModel), String, Tuple(Of String, List(Of Integer), List(Of Integer), List(Of String))) Implements IForecastService.ProcessForecastCSVFile
-            Dim forecastService As New ForeCastService()
 
             Dim parsedLocations = _locationParserService.ParseCsvFile(forecastCsvFile)
 
             Dim forecastDataList As New List(Of LocationViewModel)()
 
-
             For Each location In parsedLocations
-                Dim data = forecastService.GetLocationForecast(Double.Parse(location.Latitude), Double.Parse(location.Longitude), location.LocationName)
+                Dim data = GetLocationForecast(Double.Parse(location.Latitude), Double.Parse(location.Longitude), location.LocationName)
                 forecastDataList.Add(data)
             Next
 
@@ -47,11 +45,11 @@ Namespace WeatherForecast.Services
                 Dim data = _openMeteoClient.GetDailyForecastData(lat, lon)
 
                 Dim forecastData As New LocationViewModel() With {
-            .Latitude = lat.ToString(),
-            .Longitude = lon.ToString(),
-            .LocationName = locationName,
-            .DailyForecasts = data
-            }
+                    .Latitude = lat.ToString(),
+                    .Longitude = lon.ToString(),
+                    .LocationName = locationName,
+                    .DailyForecasts = data
+                }
 
                 _forecastRepositoryService.SaveForecastsData(New List(Of LocationViewModel) From {forecastData})
 
