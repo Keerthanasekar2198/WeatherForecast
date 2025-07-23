@@ -2,6 +2,11 @@
 
 Weather Forecast Application using VB.NET MVC
 
+Instructions:
+1. Run the SQL script from the following link in your local SQL Server to initialize the database: https://github.com/Keerthanasekar2198/WeatherForecast/blob/master/DBInitCommand.sql
+2. If you face any issues with NuGet packages when running the project for the first time, try the following steps: dotnet clean, dotnet restore, dotnet build
+3. You can find various sample input files (covering both positive and negative test cases) in the "Sample Inputs" folder here: https://github.com/Keerthanasekar2198/WeatherForecast/tree/master/Sample%20Inputs (Covering both positive and negative cases)
+
 Approach:
 
 1. User is shown with the interface to either upload/drag & drop CSV file and the CSV contains list of latitude, longitude and location name
